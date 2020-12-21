@@ -1,29 +1,120 @@
-<html>
-<head>
-<title>Sistem Temu Kembali</title>
-<!--<link  href="../jw.png" rel="shortcut icon" type="image/png" />-->
-<style>
-h2 {
-    background-size: 60px 40px;
-	background-color: #c3d0ef;
-}
-</style>
-</head>
-<body>
-<h2 align=center><br>Sistem Temu Kembali Informasi<br><br></h2>
-<hr>
-<div align=center>
-| <a href="koneksi.php">Koneksi</a> |
-<a href="buatberita.php">Buat Dokumen</a> |
-<a href="lihatberita.php">Lihat Dokumen</a> |
-<a href="lowercase.php">Lower Case Dokumen</a> |
-<a href="hapustandabaca.php">Hapus Tanda Baca</a> |
-<a href="tokenisasi.php">Tokenisasi Kata</a> |
-<a href="hasiltokenisasikata.php">Hasil Token Kata</a> |
-<a href="datastopword.php">Data Stopword</a> |
-<a href="prosesstopword.php">Proses Stopword</a> |
-<a href="prosesstemming.php">Proses Stemming</a> |
+<!DOCTYPE html>
+<html lang="en">
+<?php session_start() ?>
+<?php 
+ include 'admin/db_connect.php';
+    ob_start();
+  if(!isset($_SESSION['system'])){
+
+    $system = $conn->query("SELECT * FROM system_settings")->fetch_array();
+    foreach($system as $k => $v){
+      $_SESSION['system'][$k] = $v;
+    }
+  }
+  ob_end_flush();
+	include 'header.php' 
+?>
+<body class="hold-transition layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse">
+<div class="wrapper">
+  <?php include 'topbar.php' ?>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+  	 <div class="toast" id="alert_toast" role="alert" aria-live="assertive" aria-atomic="true">
+	    <div class="toast-body text-white">
+	    </div>
+	  </div>
+    <div id="toastsContainerTopRight" class="toasts-top-right fixed"></div>
+    <!-- Content Header (Page header) -->
+   
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-md">
+         <?php 
+          $page = isset($_GET['page']) ? $_GET['page'] : 'home';
+          include $page.'.php';
+          ?>
+      </div><!--/. container-fluid -->
+    </section>
+    <!-- /.content -->
+    <div class="modal fade" id="confirm_modal" role='dialog'>
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+      </div>
+      <div class="modal-body">
+        <div id="delete_content"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id='confirm' onclick="">Continue</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="uni_modal" role='dialog'>
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title"></h5>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="uni_modal_right" role='dialog'>
+    <div class="modal-dialog modal-full-height  modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="fa fa-arrow-right"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="viewer_modal" role='dialog'>
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+              <button type="button" class="btn-close" data-dismiss="modal"><span class="fa fa-times"></span></button>
+              <img src="" alt="">
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer" style="position: static !important;">
+    <strong>Copyright; 2020 <a>Ren</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b><?php echo $_SESSION['system']['name'] ?></b>
+    </div>
+  </footer>
 </div>
-<hr/>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+<!-- jQuery -->
+<!-- Bootstrap -->
+<?php include 'footer.php' ?>
 </body>
 </html>
